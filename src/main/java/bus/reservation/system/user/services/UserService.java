@@ -1,9 +1,12 @@
 package bus.reservation.system.user.services;
 
+import bus.reservation.system.BusReservationSystemApplication;
 import bus.reservation.system.user.entities.Role;
 import bus.reservation.system.user.entities.User;
 import bus.reservation.system.user.repositories.RoleRepository;
 import bus.reservation.system.user.repositories.UserRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +22,10 @@ import javax.servlet.http.HttpSession;
 
 @Service
 public class UserService {
+
+    @Autowired
+    private static final Logger logger = LogManager.getLogger(BusReservationSystemApplication.class);
+
     @Autowired
     private UserRepository repository;
 
@@ -46,6 +53,8 @@ public class UserService {
     }
 
     public User updateUser(User user) {
+        logger.debug("Service call /updateUser");
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication.isAuthenticated()) {
@@ -54,9 +63,11 @@ public class UserService {
             existingUser.setFirstName(user.getFirstName());
             existingUser.setLastName(user.getLastName());
             existingUser.setMobileNumber(user.getMobileNumber());
-            return repository.save(existingUser);
+            User result = repository.save(existingUser);
+            logger.debug("Service result /updateUser: "+result.toString());
+            return result;
         }
-
+        logger.debug("Service result /updateUser. Something went wrong. User is not Authenticated!");
         return user;
     }
 }

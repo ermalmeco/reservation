@@ -2,10 +2,13 @@ package bus.reservation.system.user.services;
 
 import java.util.ArrayList;
 
+import bus.reservation.system.BusReservationSystemApplication;
 import bus.reservation.system.user.entities.Role;
 import bus.reservation.system.user.repositories.RoleRepository;
 import bus.reservation.system.user.repositories.UserRepository;
 import bus.reservation.system.utils.Constants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -17,6 +20,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
+
+    @Autowired
+    private static final Logger logger = LogManager.getLogger(BusReservationSystemApplication.class);
+
 
     @Autowired
     private UserRepository userRepository;
@@ -38,7 +45,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     }
 
     public bus.reservation.system.user.entities.User save(bus.reservation.system.user.entities.User user) throws Exception {
-        bus.reservation.system.user.entities.User newUser = new bus.reservation.system.user.entities.User();
+        logger.debug("Service call /register");
         bus.reservation.system.user.entities.User exUser = userRepository.findByEmail(user.getEmail());
         if (exUser == null) {
             if (user.getPassword() != null) {
@@ -52,8 +59,11 @@ public class JwtUserDetailsService implements UserDetailsService {
                 userRole = roleRepository.findByName(Constants.USER_NAME);
             }
             user.setRole(userRole.getId());
-            return userRepository.save(user);
+            bus.reservation.system.user.entities.User result = userRepository.save(user);
+            logger.debug("Service result /register "+result.toString());
+            return result;
         }else{
+            logger.debug("Service call /register, something went wrong");
             throw new Exception("User exists");
         }
     }

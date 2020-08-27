@@ -2,13 +2,15 @@ package bus.reservation.system.user.controllers;
 
 import java.util.Objects;
 
+import bus.reservation.system.BusReservationSystemApplication;
 import bus.reservation.system.config.JwtTokenUtil;
 import bus.reservation.system.user.entities.JwtRequest;
 import bus.reservation.system.user.entities.JwtResponse;
 import bus.reservation.system.user.entities.User;
 import bus.reservation.system.user.services.JwtUserDetailsService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -28,6 +30,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class JwtAuthenticationController {
 
     @Autowired
+    private static final Logger logger = LogManager.getLogger(BusReservationSystemApplication.class);
+
+    @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
@@ -42,6 +47,7 @@ public class JwtAuthenticationController {
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> generateAuthenticationToken(@RequestBody JwtRequest authenticationRequest)
             throws Exception {
+        logger.debug("Controller call /authenticate");
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
@@ -50,12 +56,17 @@ public class JwtAuthenticationController {
 
         final String token = jwtTokenUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new JwtResponse(token));
+        ResponseEntity<?> result = ResponseEntity.ok(new JwtResponse(token));
+        logger.debug("Controller result /register " + result.toString());
+        return result;
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
 	public ResponseEntity<?> saveUser(@RequestBody User user) throws Exception {
-		return ResponseEntity.ok(userDetailsService.save(user));
+        logger.debug("Controller call /register");
+        ResponseEntity<?> result = ResponseEntity.ok(userDetailsService.save(user));
+        logger.debug("Controller result /register " + result.toString());
+        return result;
 	}
 
     private void authenticate(String username, String password) throws Exception {

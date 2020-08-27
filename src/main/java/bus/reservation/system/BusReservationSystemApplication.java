@@ -6,7 +6,6 @@ import bus.reservation.system.agency.repositories.BusRepository;
 import bus.reservation.system.agency.repositories.StationRepository;
 import bus.reservation.system.user.entities.Role;
 import bus.reservation.system.user.repositories.RoleRepository;
-import bus.reservation.system.user.repositories.UserRepository;
 import bus.reservation.system.utils.Constants;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
