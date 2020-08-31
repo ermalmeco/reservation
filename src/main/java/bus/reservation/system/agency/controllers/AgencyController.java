@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class AgencyController {
 
-    @Autowired
     private static final Logger logger = LogManager.getLogger(BusReservationSystemApplication.class);
 
     @Autowired

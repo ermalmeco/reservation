@@ -14,7 +14,6 @@ public class TripService {
     @Autowired
     private TripRepository repository;
 
-    @Autowired
     private static final Logger logger = LogManager.getLogger(BusReservationSystemApplication.class);
 
     public Trip addTrip(Trip trip){

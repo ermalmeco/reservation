@@ -15,7 +15,6 @@ import java.util.List;
 @RestController
 public class TripController {
 
-    @Autowired
     private static final Logger logger = LogManager.getLogger(BusReservationSystemApplication.class);
 
     @Autowired

@@ -15,7 +15,6 @@ public class StationService {
     @Autowired
     private StationRepository repository;
 
-    @Autowired
     private static final Logger logger = LogManager.getLogger(BusReservationSystemApplication.class);
 
     public List<Station> listAllStations() {

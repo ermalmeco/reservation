@@ -17,7 +17,6 @@ public class StationController {
     @Autowired
     private StationService service;
 
-    @Autowired
     private static final Logger logger = LogManager.getLogger(BusReservationSystemApplication.class);
 
     @GetMapping("/getStations")

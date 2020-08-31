@@ -18,7 +18,6 @@ public class AgencyService {
     @Autowired
     private BusRepository busRepository;
 
-    @Autowired
     private static final Logger logger = LogManager.getLogger(BusReservationSystemApplication.class);
 
     public Agency addAgency(Agency agency) {

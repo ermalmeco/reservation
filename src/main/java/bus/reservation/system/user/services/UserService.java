@@ -23,7 +23,6 @@ import javax.servlet.http.HttpSession;
 @Service
 public class UserService {
 
-    @Autowired
     private static final Logger logger = LogManager.getLogger(BusReservationSystemApplication.class);
 
     @Autowired
