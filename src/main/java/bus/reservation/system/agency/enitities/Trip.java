@@ -17,7 +17,7 @@ public class Trip {
     @GeneratedValue
     private int id;
     private int fare;
-    private int tripTime;
+    private String tripTime;
     private int startStation;
     private int endStation;
     private int bus;
