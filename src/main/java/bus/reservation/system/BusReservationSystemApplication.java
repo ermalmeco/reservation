@@ -25,6 +25,7 @@ public class BusReservationSystemApplication {
 			Role admin = roleRepository.findByName(Constants.ADMIN_NAME);
 			if (admin == null) {
 				admin = new Role();
+				admin.setId((byte) 1);
 				admin.setName(Constants.ADMIN_NAME);
 				roleRepository.save(admin);
 			}
@@ -32,6 +33,7 @@ public class BusReservationSystemApplication {
 			Role user = roleRepository.findByName(Constants.USER_NAME);
 			if (user == null) {
 				user = new Role();
+				admin.setId((byte) 0);
 				user.setName(Constants.USER_NAME);
 				roleRepository.save(user);
 			}

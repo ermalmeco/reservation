@@ -29,16 +29,16 @@ public class TripService {
     }
 
     public Trip updateTrip(Trip trip){
-        Trip exTrip = repository.findById(trip.getId()).orElse(null);
-        if (exTrip != null){
-            exTrip.setFare(trip.getFare());
-            exTrip.setAgency(trip.getAgency());
-            exTrip.setBus(trip.getBus());
-            exTrip.setEndStation(trip.getEndStation());
-            exTrip.setStartStation(trip.getStartStation());
-            exTrip.setTripTime(trip.getTripTime());
-            return exTrip;
-        }
+//        Trip exTrip = repository.findById(trip.getId()).orElse(null);
+//        if (exTrip != null){
+//            exTrip.setFare(trip.getFare());
+//            exTrip.setAgency(trip.getAgency());
+//            exTrip.setBus(trip.getBus());
+//            exTrip.setEndStation(trip.getEndStation());
+//            exTrip.setStartStation(trip.getStartStation());
+//            exTrip.setTripTime(trip.getTripTime());
+//            return exTrip;
+//        }
         return trip;
     }
 

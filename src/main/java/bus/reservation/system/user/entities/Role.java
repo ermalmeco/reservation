@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,7 +16,7 @@ import javax.persistence.Id;
 @Entity
 public class Role {
     @Id
-    @GeneratedValue
-    private int id;
+    private byte id;
+    @Column(unique = true, nullable = false)
     private String name;
 }

@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @AllArgsConstructor
@@ -18,8 +16,11 @@ public class Trip {
     private int id;
     private int fare;
     private String tripTime;
-    private int startStation;
     private int endStation;
     private int bus;
     private int agency;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "startStation", referencedColumnName = "id")
+    private Station station;
 }

@@ -4,10 +4,7 @@ package bus.reservation.system.user.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 @Data
 @AllArgsConstructor
@@ -17,12 +14,18 @@ public class User {
     @Id
     @GeneratedValue
     private int id;
+    @Column(nullable = false)
     private String email;
     @Transient
     private String password;
+    @Column(nullable = false)
     private String encryptedPassword;
+    @Column(nullable = false)
     private String firstName;
+    @Column(nullable = false)
     private String lastName;
+    @Column(nullable = false)
     private String mobileNumber;
+    @Column(nullable = false)
     private int role;
 }

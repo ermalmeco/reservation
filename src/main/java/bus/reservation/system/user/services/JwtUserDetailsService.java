@@ -1,8 +1,12 @@
 package bus.reservation.system.user.services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import bus.reservation.system.BusReservationSystemApplication;
+import bus.reservation.system.dto.mapper.UserMapper;
+import bus.reservation.system.dto.model.user.UserDto;
 import bus.reservation.system.user.entities.Role;
 import bus.reservation.system.user.repositories.RoleRepository;
 import bus.reservation.system.user.repositories.UserRepository;
@@ -43,22 +47,24 @@ public class JwtUserDetailsService implements UserDetailsService {
                 new ArrayList<>());
     }
 
-    public bus.reservation.system.user.entities.User save(bus.reservation.system.user.entities.User user) throws Exception {
+    public UserDto save(UserDto userDto) throws Exception {
         logger.debug("Service call /register");
-        bus.reservation.system.user.entities.User exUser = userRepository.findByEmail(user.getEmail());
+        Role userRole;
+        bus.reservation.system.user.entities.User exUser = userRepository.findByEmail(userDto.getEmail());
         if (exUser == null) {
-            if (user.getPassword() != null) {
-                user.setEncryptedPassword(bcryptEncoder.encode(user.getPassword()));
-            }
-
-            Role userRole;
-            if (user.getRole() == 1) {
+            if (userDto.getRole() == 1) {
                 userRole = roleRepository.findByName(Constants.ADMIN_NAME);
             } else {
                 userRole = roleRepository.findByName(Constants.USER_NAME);
             }
+            bus.reservation.system.user.entities.User user = new bus.reservation.system.user.entities.User();
+            user.setEmail(userDto.getEmail());
+            user.setEncryptedPassword(bcryptEncoder.encode(userDto.getPassword()));
             user.setRole(userRole.getId());
-            bus.reservation.system.user.entities.User result = userRepository.save(user);
+            user.setFirstName(userDto.getFirstName());
+            user.setLastName(userDto.getLastName());
+            user.setMobileNumber(userDto.getMobileNumber());
+            UserDto result = UserMapper.toUserDto(userRepository.save(user));
             logger.debug("Service result /register "+result.toString());
             return result;
         }else{

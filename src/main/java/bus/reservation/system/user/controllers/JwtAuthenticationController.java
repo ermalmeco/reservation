@@ -4,6 +4,8 @@ import java.util.Objects;
 
 import bus.reservation.system.BusReservationSystemApplication;
 import bus.reservation.system.config.JwtTokenUtil;
+import bus.reservation.system.dto.mapper.UserMapper;
+import bus.reservation.system.dto.model.user.UserDto;
 import bus.reservation.system.user.entities.JwtRequest;
 import bus.reservation.system.user.entities.JwtResponse;
 import bus.reservation.system.user.entities.User;
@@ -61,7 +63,8 @@ public class JwtAuthenticationController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-	public ResponseEntity<?> saveUser(@RequestBody User user) throws Exception {
+    // po e marr userDto tipin e request body por mund te jete dhe vet forma e frontit dhe me pas ta konvertoj ne userDto
+	public ResponseEntity<?> saveUser(@RequestBody UserDto user) throws Exception {
         logger.debug("Controller call /register");
         ResponseEntity<?> result = ResponseEntity.ok(userDetailsService.save(user));
         logger.debug("Controller result /register " + result.toString());

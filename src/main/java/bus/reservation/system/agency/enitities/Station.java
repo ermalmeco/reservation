@@ -14,7 +14,11 @@ public class Station {
     @Id
     @GeneratedValue
     private int id;
+    @Column(unique = true)
     private String code;
     private String name;
     private String details;
+
+    @OneToOne(mappedBy = "trip")
+    private Trip trip;
 }
