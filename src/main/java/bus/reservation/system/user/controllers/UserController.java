@@ -1,6 +1,8 @@
 package bus.reservation.system.user.controllers;
 
 import bus.reservation.system.BusReservationSystemApplication;
+import bus.reservation.system.dto.model.user.UserDto;
+import bus.reservation.system.dto.response.Response;
 import bus.reservation.system.user.entities.User;
 import bus.reservation.system.user.services.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -34,11 +36,11 @@ public class UserController {
     }
 
     @PutMapping("/updateUser")
-    public User updateUser(@RequestBody User user){
+    public Response updateUser(@RequestBody UserDto user){
         logger.debug("Controller call /updateUser");
-        User result = service.updateUser(user);
+        UserDto result = service.updateUser(user);
         logger.debug("Controller result /updateUser: "+ result.toString());
-        return result;
+        return Response.ok().setPayload(result);
     }
 
     @PutMapping("/delete/{Id}")

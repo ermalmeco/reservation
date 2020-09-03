@@ -6,6 +6,7 @@ import bus.reservation.system.BusReservationSystemApplication;
 import bus.reservation.system.config.JwtTokenUtil;
 import bus.reservation.system.dto.mapper.UserMapper;
 import bus.reservation.system.dto.model.user.UserDto;
+import bus.reservation.system.dto.response.Response;
 import bus.reservation.system.user.entities.JwtRequest;
 import bus.reservation.system.user.entities.JwtResponse;
 import bus.reservation.system.user.entities.User;
@@ -13,6 +14,7 @@ import bus.reservation.system.user.services.JwtUserDetailsService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -49,6 +51,7 @@ public class JwtAuthenticationController {
     public ResponseEntity<?> generateAuthenticationToken(@RequestBody JwtRequest authenticationRequest)
             throws Exception {
         logger.debug("Controller call /authenticate");
+        logger.debug(authenticationRequest.toString());
 
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
@@ -63,12 +66,11 @@ public class JwtAuthenticationController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    // po e marr userDto tipin e request body por mund te jete dhe vet forma e frontit dhe me pas ta konvertoj ne userDto
-	public ResponseEntity<?> saveUser(@RequestBody UserDto user) throws Exception {
+	public Response saveUser(@RequestBody UserDto user) throws Exception {
         logger.debug("Controller call /register");
-        ResponseEntity<?> result = ResponseEntity.ok(userDetailsService.save(user));
+        UserDto result = userDetailsService.save(user);
         logger.debug("Controller result /register " + result.toString());
-        return result;
+        return Response.ok().setPayload(result);
 	}
 
     private void authenticate(String username, String password) throws Exception {

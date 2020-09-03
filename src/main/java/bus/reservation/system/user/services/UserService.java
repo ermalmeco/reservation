@@ -1,6 +1,13 @@
 package bus.reservation.system.user.services;
 
 import bus.reservation.system.BusReservationSystemApplication;
+import bus.reservation.system.dto.mapper.UserMapper;
+import bus.reservation.system.exception.BRSException;
+import bus.reservation.system.exception.ExceptionType;
+import bus.reservation.system.user.entities.UserRoles;
+import bus.reservation.system.user.repositories.UserRolesRepository;
+import org.modelmapper.ModelMapper;
+import bus.reservation.system.dto.model.user.UserDto;
 import bus.reservation.system.user.entities.Role;
 import bus.reservation.system.user.entities.User;
 import bus.reservation.system.user.repositories.RoleRepository;
@@ -15,10 +22,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
+
 import bus.reservation.system.utils.Constants;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import static bus.reservation.system.exception.EntityType.USER;
+import static bus.reservation.system.exception.ExceptionType.*;
 
 @Service
 public class UserService {
@@ -33,6 +45,12 @@ public class UserService {
 
     @Autowired
     private HttpSession httpSession;
+
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
+    private UserRolesRepository userRolesRepository;
 
     public List<User> getUsers(){
         return repository.findAll();
@@ -51,22 +69,50 @@ public class UserService {
         return "User Deleted!";
     }
 
-    public User updateUser(User user) {
+    public UserDto updateUser(UserDto user) {
         logger.debug("Service call /updateUser");
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         if (authentication.isAuthenticated()) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            User existingUser = repository.findByEmail(userDetails.getUsername());
-            existingUser.setFirstName(user.getFirstName());
-            existingUser.setLastName(user.getLastName());
-            existingUser.setMobileNumber(user.getMobileNumber());
-            User result = repository.save(existingUser);
+            UserDto exUser = findUserByEmail(userDetails.getUsername());
+            logger.debug("exUser: "+exUser.toString());
+            logger.debug("user: "+user.toString());
+            User saveUser = new User();
+            saveUser.setId(exUser.getId());
+            saveUser.setEmail(exUser.getEmail());
+            saveUser.setEncryptedPassword(exUser.getEncryptedPassword());
+            //new data
+            saveUser.setFirstName(user.getFirstName());
+            saveUser.setLastName(user.getLastName());
+            saveUser.setMobileNumber(user.getMobileNumber());
+            User savedUser = repository.save(saveUser);
+
+            userRolesRepository.deleteUserRolesByUserId(savedUser.getId());
+            for (String role: user.getRoleNames()) {
+                Role getRole = roleRepository.findByName(role);
+                UserRoles newUserRole = new UserRoles();
+                newUserRole.setRoleId(getRole.getId());
+                newUserRole.setRole(getRole);
+                newUserRole.setUser(savedUser);
+                newUserRole.setUserId(savedUser.getId());
+                savedUser.getUserRoles().add(newUserRole);
+                userRolesRepository.save(newUserRole);
+            }
+
+            UserDto result = UserMapper.toUserDto(repository.save(savedUser));
             logger.debug("Service result /updateUser: "+result.toString());
             return result;
         }
         logger.debug("Service result /updateUser. Something went wrong. User is not Authenticated!");
-        return user;
+        throw BRSException.throwException(USER,AUTHENTICATE,"");
+    }
+
+    public UserDto findUserByEmail(String email) {
+        Optional<User> user = Optional.ofNullable(repository.findByEmail(email));
+        if (user.isPresent()) {
+            return modelMapper.map(user.get(), UserDto.class);
+        }
+        throw BRSException.throwException(USER, ENTITY_NOT_FOUND, email);
     }
 }

@@ -6,7 +6,8 @@ import lombok.*;
 import lombok.experimental.Accessors;
 import org.assertj.core.util.DateUtil;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @Accessors(chain = true)
 @NoArgsConstructor

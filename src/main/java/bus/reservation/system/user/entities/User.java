@@ -1,20 +1,22 @@
 package bus.reservation.system.user.entities;
 
+import bus.reservation.system.agency.enitities.Agency;
+import lombok.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class User {
     @Id
     @GeneratedValue
-    private int id;
-    @Column(nullable = false)
+    private Integer id;
+    @Column(nullable = false, unique = true)
     private String email;
     @Transient
     private String password;
@@ -26,6 +28,22 @@ public class User {
     private String lastName;
     @Column(nullable = false)
     private String mobileNumber;
-    @Column(nullable = false)
-    private int role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserRoles> userRoles = new ArrayList<>();
+
+    @OneToOne(mappedBy = "user",fetch=FetchType.EAGER)
+    private Agency agency;
+
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", encryptedPassword='" + encryptedPassword + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", mobileNumber='" + mobileNumber + '\'' +
+                '}';
+    }
 }

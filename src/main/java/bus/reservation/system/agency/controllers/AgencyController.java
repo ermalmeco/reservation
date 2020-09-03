@@ -3,6 +3,9 @@ package bus.reservation.system.agency.controllers;
 import bus.reservation.system.BusReservationSystemApplication;
 import bus.reservation.system.agency.enitities.Agency;
 import bus.reservation.system.agency.services.AgencyService;
+import bus.reservation.system.dto.model.agency.AgencyDto;
+import bus.reservation.system.dto.model.agency.BusDto;
+import bus.reservation.system.dto.response.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +20,11 @@ public class AgencyController {
     private AgencyService service;
 
     @PostMapping("/addAgency")
-    public Agency addAgency(@RequestBody Agency agency) {
+    public Response addAgency(@RequestBody Agency agency) {
         logger.debug("Controller call /addAgency");
-        Agency result =  service.addAgency(agency);
+        AgencyDto result =  service.addAgency(agency);
         logger.debug("Controller result /addAgency: "+ result.toString());
-        return result;
+        return Response.ok().setPayload(result);
     }
 
     @DeleteMapping("/removeAgency/{id}")
@@ -29,12 +32,20 @@ public class AgencyController {
         return service.deleteAgency(id);
     }
 
-    @PutMapping("/addBusToAgency/{busId}/{agencyId}")
-    public String addBusToAgency(@PathVariable int busId, @PathVariable int agencyId) {
+    @PutMapping("/addBusToAgency/{busCode}/{agencyCode}")
+    public Response addBusToAgency(@PathVariable String busCode, @PathVariable String agencyCode) {
         logger.debug("Controller call /addBusToAgency");
-        String result =  service.addBussToAgency(busId,agencyId);
+        BusDto result =  service.addBussToAgency(busCode,agencyCode);
         logger.debug("Controller result /addBusToAgency: "+ result);
-        return result;
+        return Response.ok().setPayload(result);
+    }
+
+    @GetMapping("/agency/{code}")
+    public Response getAgencyDetailsByCode(@PathVariable String code){
+        logger.debug("Controller call /agency/{id}");
+        AgencyDto result =  service.getAgencyDetailsByCode(code);
+        logger.debug("Controller result /agency/{id}: "+ result.toString());
+        return Response.ok().setPayload(result);
     }
 
     @PutMapping("/updateAgency")

@@ -1,26 +1,35 @@
 package bus.reservation.system.agency.enitities;
 
 
-import com.fasterxml.jackson.annotation.ObjectIdResolver;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import bus.reservation.system.user.entities.User;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Agency {
     @Id
     @GeneratedValue
-    private int id;
+    private Integer id;
 
+    @Column(unique = true)
     private String code;
     private String name;
     private String details;
-    private int owner;
+    @Column(insertable = false,updatable = false)
+    private Integer owner;
+
+    @OneToOne(mappedBy = "agencyObj",fetch= FetchType.EAGER)
+    private Trip trip;
+
+    @OneToOne(mappedBy = "busAgencyObj",fetch=FetchType.EAGER)
+    private Bus bus;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner")
+    private User user;
 }

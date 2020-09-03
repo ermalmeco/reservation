@@ -1,7 +1,9 @@
 package bus.reservation.system;
 
+import bus.reservation.system.agency.enitities.Agency;
 import bus.reservation.system.agency.enitities.Bus;
 import bus.reservation.system.agency.enitities.Station;
+import bus.reservation.system.agency.repositories.AgencyRepository;
 import bus.reservation.system.agency.repositories.BusRepository;
 import bus.reservation.system.agency.repositories.StationRepository;
 import bus.reservation.system.user.entities.Role;
@@ -71,7 +73,7 @@ public class BusReservationSystemApplication {
 				bus1.setName("Bus 1");
 				bus1.setDetails("Bus number 1");
 				bus1.setCode("B1");
-				bus1.setAgency(0);
+				bus1.setAgency((Integer)0);
 				busRepository.save(bus1);
 			}
 
@@ -81,7 +83,7 @@ public class BusReservationSystemApplication {
 				bus2.setName("Bus 2");
 				bus2.setDetails("Bus number 2");
 				bus2.setCode("B2");
-				bus1.setAgency(0);
+				bus1.setAgency((Integer)0);
 				busRepository.save(bus2);
 			}
 

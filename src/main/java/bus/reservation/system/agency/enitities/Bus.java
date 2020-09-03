@@ -1,14 +1,12 @@
 package bus.reservation.system.agency.enitities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import bus.reservation.system.user.entities.Role;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -17,8 +15,17 @@ public class Bus {
     @GeneratedValue
     private int id;
 
+    @Column(unique = true)
     private String code;
     private String name;
     private String details;
-    private int agency;
+    @Column(insertable = false,updatable = false)
+    private Integer agency;
+
+    @OneToOne(mappedBy = "busObj",fetch=FetchType.EAGER)
+    private Trip trip;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "agency")
+    private Agency busAgencyObj;
 }

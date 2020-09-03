@@ -22,8 +22,6 @@ public class StationController {
 
     @GetMapping("/getStations")
     public Response getAllStops() {
-        return Response
-                .ok()
-                .setPayload(service.listAllStations());
+        return Response.ok().setPayload(service.listAllStations());
     }
 }

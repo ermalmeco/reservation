@@ -5,6 +5,8 @@ import bus.reservation.system.agency.enitities.Agency;
 import bus.reservation.system.agency.enitities.Trip;
 import bus.reservation.system.agency.services.AgencyService;
 import bus.reservation.system.agency.services.TripService;
+import bus.reservation.system.dto.model.agency.TripDto;
+import bus.reservation.system.dto.response.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,11 @@ public class TripController {
     private TripService service;
 
     @PostMapping("/addTrip")
-    public Trip addTrip(@RequestBody Trip trip){
+    public Response addTrip(@RequestBody Trip trip){
         logger.debug("Controller call /addTrip");
-        Trip result = service.addTrip(trip);
+        TripDto result = service.addTrip(trip);
         logger.debug("Controller result /addTrip: "+ result.toString());
-        return result;
+        return Response.ok().setPayload(result);
     }
 
     @DeleteMapping("/removeTrip/{id}")
@@ -33,16 +35,11 @@ public class TripController {
         return service.deleteTrip(id);
     }
 
-    @PutMapping("/updateTrip")
-    public Trip updateTrip(@RequestBody Trip trip){
-        return service.updateTrip(trip);
-    }
-
     @GetMapping("/findTripByStations/{station1}/{station2}")
-    public List<Trip> searchTripBetweenStations(@PathVariable int station1, @PathVariable int station2){
+    public Response searchTripBetweenStations(@PathVariable int station1, @PathVariable int station2){
         logger.debug("Controller call /findTripByStations");
-        List<Trip> result =  service.searchTripBetweenStations(station1,station2);
+        List<TripDto> result =  service.searchTripBetweenStations(station1,station2);
         logger.debug("Controller result /findTripByStations: "+ result.toString());
-        return result;
+        return Response.ok().setPayload(result);
     }
 }

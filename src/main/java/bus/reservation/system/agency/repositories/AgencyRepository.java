@@ -4,4 +4,5 @@ import bus.reservation.system.agency.enitities.Agency;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AgencyRepository extends JpaRepository<Agency, Integer> {
+    Agency findByCode(String s);
 }

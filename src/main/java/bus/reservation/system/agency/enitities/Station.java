@@ -1,12 +1,11 @@
 package bus.reservation.system.agency.enitities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -19,6 +18,9 @@ public class Station {
     private String name;
     private String details;
 
-    @OneToOne(mappedBy = "trip")
+    @OneToOne(mappedBy = "station",fetch=FetchType.EAGER)
     private Trip trip;
+
+    @OneToOne(mappedBy = "endStationObj",fetch=FetchType.EAGER)
+    private Trip trip2;
 }
