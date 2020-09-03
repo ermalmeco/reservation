@@ -1,8 +1,11 @@
 package bus.reservation.system.agency.enitities;
 
+import bus.reservation.system.user.entities.UserRoles;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -39,4 +42,7 @@ public class Trip {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agency")
     private Agency agencyObj;
+
+    @OneToMany(mappedBy = "tripTripScheduleObj", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TripSchedule> tripSchedulesObj = new ArrayList<>();
 }

@@ -7,9 +7,11 @@ import bus.reservation.system.agency.services.AgencyService;
 import bus.reservation.system.agency.services.TripService;
 import bus.reservation.system.dto.model.agency.TripDto;
 import bus.reservation.system.dto.response.Response;
+import bus.reservation.system.forms.TripForm;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +25,7 @@ public class TripController {
     private TripService service;
 
     @PostMapping("/addTrip")
-    public Response addTrip(@RequestBody Trip trip){
+    public Response addTrip(@RequestBody @Validated TripForm trip){
         logger.debug("Controller call /addTrip");
         TripDto result = service.addTrip(trip);
         logger.debug("Controller result /addTrip: "+ result.toString());

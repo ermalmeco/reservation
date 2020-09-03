@@ -1,6 +1,7 @@
 package bus.reservation.system.user.entities;
 
 import bus.reservation.system.agency.enitities.Agency;
+import bus.reservation.system.agency.enitities.Book;
 import lombok.*;
 
 import javax.persistence.*;
@@ -34,6 +35,9 @@ public class User {
 
     @OneToOne(mappedBy = "user",fetch=FetchType.EAGER)
     private Agency agency;
+
+    @OneToMany(mappedBy = "userBookObj", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Book> bookObj = new ArrayList<>();
 
     public String toString() {
         return "User{" +

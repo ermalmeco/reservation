@@ -74,6 +74,7 @@ public class BusReservationSystemApplication {
 				bus1.setDetails("Bus number 1");
 				bus1.setCode("B1");
 				bus1.setAgency((Integer)0);
+				bus1.setCapacity(50);
 				busRepository.save(bus1);
 			}
 
@@ -84,6 +85,7 @@ public class BusReservationSystemApplication {
 				bus2.setDetails("Bus number 2");
 				bus2.setCode("B2");
 				bus1.setAgency((Integer)0);
+				bus1.setCapacity(50);
 				busRepository.save(bus2);
 			}
 

@@ -9,6 +9,7 @@ public class BusMapper {
         busDto.setCode(bus.getCode());
         busDto.setAgencyCode(bus.getBusAgencyObj().getCode());
         busDto.setName(bus.getName());
+        busDto.setCapacity(bus.getCapacity());
         busDto.setDetails(bus.getDetails());
 
         return busDto;

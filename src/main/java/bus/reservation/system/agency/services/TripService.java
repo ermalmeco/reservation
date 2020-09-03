@@ -9,12 +9,11 @@ import bus.reservation.system.agency.repositories.AgencyRepository;
 import bus.reservation.system.agency.repositories.BusRepository;
 import bus.reservation.system.agency.repositories.StationRepository;
 import bus.reservation.system.agency.repositories.TripRepository;
-import bus.reservation.system.dto.mapper.StationMapper;
 import bus.reservation.system.dto.mapper.TripMapper;
-import bus.reservation.system.dto.model.agency.StationDto;
 import bus.reservation.system.dto.model.agency.TripDto;
 import bus.reservation.system.dto.model.user.UserDto;
 import bus.reservation.system.exception.BRSException;
+import bus.reservation.system.forms.TripForm;
 import bus.reservation.system.user.entities.UserRoles;
 import bus.reservation.system.user.services.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -50,13 +49,14 @@ public class TripService {
 
     private static final Logger logger = LogManager.getLogger(BusReservationSystemApplication.class);
 
-    public TripDto addTrip(Trip trip) {
+    public TripDto addTrip(TripForm trip) {
         logger.debug("Service call /addTrip");
+        logger.debug("tripData: "+trip.toString());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         UserDto exUser = userService.findUserByEmail(userDetails.getUsername());
         logger.debug("exUser: "+exUser.toString());
-        Boolean isAdmin = false;
+        boolean isAdmin = false;
         for (UserRoles role: exUser.getUserRoles()) {
             if (role.getRoleId() == 1) {
                 isAdmin = true;
@@ -65,30 +65,37 @@ public class TripService {
         }
         if (isAdmin) {
             //check start station
-            Station startStation = stationRepository.findById(trip.getStartStation()).orElse(null);
+            Station startStation = stationRepository.findByCode(trip.getStartStation());
             if (startStation != null) {
                 //check end station
-                Station stopStation = stationRepository.findById(trip.getEndStation()).orElse(null);
+                Station stopStation = stationRepository.findByCode(trip.getEndStation());
                 if (stopStation != null) {
                     //check bus station
-                    Bus bus = busRepository.findById(trip.getBus()).orElse(null);
+                    Bus bus = busRepository.findByCode(trip.getBusCode());
                     if (bus != null) {
                         //check agency station
-                        Agency agency = agencyRepository.findById(trip.getAgency()).orElse(null);
+                        Agency agency = agencyRepository.findByCode(trip.getAgencyCode());
                         if (agency != null) {
-                            trip.setAgencyObj(agency);
-                            trip.setBusObj(bus);
-                            trip.setEndStationObj(stopStation);
-                            trip.setStation(startStation);
-                            TripDto result = TripMapper.toTripDto(repository.save(trip));
+                            Trip newTrip = new Trip();
+                            newTrip.setAgency(agency.getId());
+                            newTrip.setAgencyObj(agency);
+                            newTrip.setFare(trip.getTripFare());
+                            newTrip.setTripTime(trip.getTripTime());
+                            newTrip.setStartStation(startStation.getId());
+                            newTrip.setEndStation(stopStation.getId());
+                            newTrip.setBus(bus.getId());
+                            newTrip.setStation(startStation);
+                            newTrip.setEndStationObj(stopStation);
+                            newTrip.setBusObj(bus);
+                            TripDto result = TripMapper.toTripDto(repository.save(newTrip));
                             logger.debug("Service result /addTrip: " + result.toString());
                             return result;
                         }
                         logger.debug("Service result /addTrip. Something went wrong. Agency not found!");
-                        throw BRSException.throwException(BUS, ENTITY_NOT_FOUND, "" + trip.getAgency());
+                        throw BRSException.throwException(BUS, ENTITY_NOT_FOUND, "" + trip.getAgencyCode());
                     }
                     logger.debug("Service result /addTrip. Something went wrong. Bus not found!");
-                    throw BRSException.throwException(BUS, ENTITY_NOT_FOUND, "" + trip.getBus());
+                    throw BRSException.throwException(BUS, ENTITY_NOT_FOUND, "" + trip.getBusCode());
                 }
                 logger.debug("Service result /addTrip. Something went wrong. End station not found!");
                 throw BRSException.throwException(STOP, ENTITY_NOT_FOUND, "" + trip.getEndStation());

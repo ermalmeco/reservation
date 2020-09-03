@@ -9,11 +9,9 @@ import lombok.Setter;
 @Setter
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BusDto {
-    private Integer id;
-    private String code;
-    private int capacity;
-    private String name;
-    private String details;
-    private String agencyCode;
+public class BookDto {
+    private String bookId;
+    private int seatNumber;
+    private String tripDate;
+    private String tripInfo;
 }

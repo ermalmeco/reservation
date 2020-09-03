@@ -17,6 +17,7 @@ public class Bus {
 
     @Column(unique = true)
     private String code;
+    private int capacity;
     private String name;
     private String details;
     @Column(insertable = false,updatable = false)
