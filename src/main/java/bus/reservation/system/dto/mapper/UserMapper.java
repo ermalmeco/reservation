@@ -3,16 +3,9 @@ package bus.reservation.system.dto.mapper;
 import bus.reservation.system.BusReservationSystemApplication;
 import bus.reservation.system.dto.model.user.UserDto;
 import bus.reservation.system.user.entities.User;
-import bus.reservation.system.user.entities.UserRoles;
-import bus.reservation.system.user.repositories.RoleRepository;
-import bus.reservation.system.user.repositories.UserRolesRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-
 
 @Component
 public class UserMapper {

@@ -4,17 +4,15 @@ import java.util.Objects;
 
 import bus.reservation.system.BusReservationSystemApplication;
 import bus.reservation.system.config.JwtTokenUtil;
-import bus.reservation.system.dto.mapper.UserMapper;
 import bus.reservation.system.dto.model.user.UserDto;
 import bus.reservation.system.dto.response.Response;
+import bus.reservation.system.forms.UserSignUpForm;
 import bus.reservation.system.user.entities.JwtRequest;
 import bus.reservation.system.user.entities.JwtResponse;
-import bus.reservation.system.user.entities.User;
 import bus.reservation.system.user.services.JwtUserDetailsService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -27,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 
 @RestController
@@ -66,7 +66,7 @@ public class JwtAuthenticationController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-	public Response saveUser(@RequestBody UserDto user) throws Exception {
+	public Response saveUser(@RequestBody @Valid UserSignUpForm user) throws Exception {
         logger.debug("Controller call /register");
         UserDto result = userDetailsService.save(user);
         logger.debug("Controller result /register " + result.toString());

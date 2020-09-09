@@ -5,6 +5,8 @@ public enum ExceptionType {
     DUPLICATE_ENTITY("duplicate"),
     AUTHENTICATE("authenticate"),
     NOT_ADMIN("notAdmin"),
+    EMPTY_EMAIL("emailEmpty"),
+    EMPTY_REGISTRATION_DETAILS("emptyDetails"),
     ENTITY_EXCEPTION("exception");
 
     String value;

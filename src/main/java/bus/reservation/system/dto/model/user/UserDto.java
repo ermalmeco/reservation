@@ -8,8 +8,8 @@ import lombok.*;
 
 import java.util.List;
 
-@Getter
 @Setter
+@Getter
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDto {
