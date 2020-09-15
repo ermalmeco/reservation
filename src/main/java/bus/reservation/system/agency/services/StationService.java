@@ -8,6 +8,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,9 +25,10 @@ public class StationService {
 
     private static final Logger logger = LogManager.getLogger(BusReservationSystemApplication.class);
 
-    public List<StationDto> listAllStations() {
+    public List<StationDto> listAllStations(int pageNo, int pageSize) {
         logger.debug("Service call /getStations");
-        List<StationDto> result = repository.findAll()
+        Pageable paging = PageRequest.of(pageNo,pageSize);
+        List<StationDto> result = repository.findAll(paging)
                 .stream()
                 .map(station -> StationMapper.toStationDto(station))
                 .collect(Collectors.toList());

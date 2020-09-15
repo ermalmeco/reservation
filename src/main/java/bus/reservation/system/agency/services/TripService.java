@@ -19,6 +19,8 @@ import bus.reservation.system.user.services.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -65,11 +67,12 @@ public class TripService {
         }
         if (isAdmin) {
             //check start station
-            Station startStation = stationRepository.findByCode(trip.getStartStation());
-            if (startStation != null) {
+            Pageable paging = PageRequest.of(0,1);
+            List<Station> startStation = stationRepository.findByCode(trip.getStartStation(),paging);
+            if (startStation.size() != 0) {
                 //check end station
-                Station stopStation = stationRepository.findByCode(trip.getEndStation());
-                if (stopStation != null) {
+                List<Station> stopStation = stationRepository.findByCode(trip.getEndStation(),paging);
+                if (stopStation.size() != 0) {
                     //check bus station
                     Bus bus = busRepository.findByCode(trip.getBusCode());
                     if (bus != null) {
@@ -81,11 +84,11 @@ public class TripService {
                             newTrip.setAgencyObj(agency);
                             newTrip.setFare(trip.getTripFare());
                             newTrip.setTripTime(trip.getTripTime());
-                            newTrip.setStartStation(startStation.getId());
-                            newTrip.setEndStation(stopStation.getId());
+                            newTrip.setStartStation(startStation.get(0).getId());
+                            newTrip.setEndStation(stopStation.get(0).getId());
                             newTrip.setBus(bus.getId());
-                            newTrip.setStation(startStation);
-                            newTrip.setEndStationObj(stopStation);
+                            newTrip.setStation(startStation.get(0));
+                            newTrip.setEndStationObj(stopStation.get(0));
                             newTrip.setBusObj(bus);
                             TripDto result = TripMapper.toTripDto(repository.save(newTrip));
                             logger.debug("Service result /addTrip: " + result.toString());
