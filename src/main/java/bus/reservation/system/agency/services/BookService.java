@@ -4,9 +4,7 @@ import bus.reservation.system.BusReservationSystemApplication;
 import bus.reservation.system.agency.enitities.*;
 import bus.reservation.system.agency.repositories.*;
 import bus.reservation.system.dto.mapper.BookMapper;
-import bus.reservation.system.dto.mapper.TripMapper;
 import bus.reservation.system.dto.model.agency.BookDto;
-import bus.reservation.system.dto.model.agency.TripDto;
 import bus.reservation.system.exception.BRSException;
 import bus.reservation.system.forms.BookForm;
 import bus.reservation.system.user.entities.User;
@@ -14,6 +12,8 @@ import bus.reservation.system.user.repositories.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -72,9 +72,10 @@ public class BookService {
     }
 
 
-    public List<BookDto> getuserbookings(int userId) {
+    public List<BookDto> getuserbookings(int userId,int pageNo, int pageSize) {
         logger.debug("Service call /getuserbookings");
-        List<BookDto> result = repository.findBooksByUserId(userId)
+        Pageable paging = PageRequest.of(pageNo,pageSize);
+        List<BookDto> result = repository.findBooksByUserId(userId, paging)
                 .stream()
                 .map(book -> BookMapper.toBookDto(book))
                 .collect(Collectors.toList());

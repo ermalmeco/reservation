@@ -5,12 +5,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Date;
+
 @Getter
 @Setter
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TripScheduleDto {
-    private String tripDate;
+    private Date tripDate;
     private int availableSeats;
     private int ticketSold;
+    private String tripInfo;
 }

@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Date;
+
 @Getter
 @Setter
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
@@ -12,6 +14,6 @@ import lombok.Setter;
 public class BookDto {
     private String bookId;
     private int seatNumber;
-    private String tripDate;
+    private Date tripDate;
     private String tripInfo;
 }

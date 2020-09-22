@@ -20,9 +20,6 @@ public class StationService {
     @Autowired
     private StationRepository repository;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     private static final Logger logger = LogManager.getLogger(BusReservationSystemApplication.class);
 
     public List<StationDto> listAllStations(int pageNo, int pageSize) {

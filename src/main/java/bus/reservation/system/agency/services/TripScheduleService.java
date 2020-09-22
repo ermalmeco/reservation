@@ -3,8 +3,10 @@ package bus.reservation.system.agency.services;
 import bus.reservation.system.BusReservationSystemApplication;
 import bus.reservation.system.agency.enitities.*;
 import bus.reservation.system.agency.repositories.*;
+import bus.reservation.system.dto.mapper.StationMapper;
 import bus.reservation.system.dto.mapper.TripMapper;
 import bus.reservation.system.dto.mapper.TripScheduleMapper;
+import bus.reservation.system.dto.model.agency.StationDto;
 import bus.reservation.system.dto.model.agency.TripDto;
 import bus.reservation.system.dto.model.agency.TripScheduleDto;
 import bus.reservation.system.dto.model.user.UserDto;
@@ -16,10 +18,15 @@ import bus.reservation.system.user.services.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,7 +66,7 @@ public class TripScheduleService {
                 TripSchedule schedule = new TripSchedule();
                 schedule.setTripId(scheduleForm.getTripId());
                 schedule.setTripTripScheduleObj(trip);
-                schedule.setTripDate(scheduleForm.getTripDate());
+                schedule.setTripDate(Date.valueOf(scheduleForm.getTripDate()));
                 schedule.setAvailableSeats(scheduleForm.getAvailableSeats());
                 schedule.setTicketSold(0);
 
@@ -72,6 +79,16 @@ public class TripScheduleService {
         }
         logger.debug("Service result /addSchedule. Something went wrong. You are not admin!");
         throw BRSException.throwException(USER, NOT_ADMIN, "");
+    }
+
+    public List<TripScheduleDto> getAvailableSchedules() {
+        logger.debug("Service call /getSchedules");
+        List<TripScheduleDto> result = tripScheduleRepository.findTripSchedulesByAvailableSeatsGreaterThanAndTripDateGreaterThan(0,Date.valueOf(LocalDate.now()))
+                .stream()
+                .map(schedule -> TripScheduleMapper.toScheduleDto(schedule))
+                .collect(Collectors.toList());
+        logger.debug("Result Service /getSchedules: "+result.toString());
+        return result;
     }
 
 }

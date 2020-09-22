@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.Id;
 import javax.persistence.*;
+import java.sql.Date;
 
 @Getter
 @Setter
@@ -20,7 +21,7 @@ public class Book {
 
     private int seatNumber;
 
-    private String journeyDate;
+    private Date journeyDate;
 
     @Column(insertable = false,updatable = false)
     private Integer scheduleId;

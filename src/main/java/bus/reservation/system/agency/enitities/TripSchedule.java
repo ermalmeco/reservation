@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.lang.reflect.Array;
+import java.sql.Date;
 import java.util.List;
 
 @Getter
@@ -22,7 +23,7 @@ public class TripSchedule {
     @Column(insertable = false,updatable = false)
     private Integer tripId;
 
-    private String tripDate;
+    private Date tripDate;
 
     private int availableSeats;
 
