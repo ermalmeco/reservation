@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@Validated
 public class TripScheduleController {
     private static final Logger logger = LogManager.getLogger(BusReservationSystemApplication.class);
 
@@ -24,7 +26,7 @@ public class TripScheduleController {
     private TripScheduleService service;
 
     @PostMapping("/scheduleTrip")
-    public Response addSchedule(@RequestBody @Validated TripScheduleForm schedule){
+    public Response addSchedule(@RequestBody @Valid TripScheduleForm schedule){
         logger.debug("Controller call /scheduleTrip");
         TripScheduleDto result = service.addSchedule(schedule);
         logger.debug("Controller result /scheduleTrip: "+ result.toString());
@@ -32,7 +34,7 @@ public class TripScheduleController {
     }
 
     @GetMapping("/getSchedules")
-    public Response getSchedules(){
+    public Response getAvailableSchedules(){
         logger.debug("Controller call /getSchedules");
         List<TripScheduleDto> result = service.getAvailableSchedules();
         logger.debug("Controller result /getSchedules: "+ result.toString());

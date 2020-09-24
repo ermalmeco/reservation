@@ -28,7 +28,8 @@ public class StationController {
 
     @GetMapping("/getStations/{pageNo}/{pageSize}")
     @Validated
-    public Response getAllStops(@PathVariable @Min(0) int pageNo, @PathVariable @Min(Constants.PAGINATION_DEFAULT_SIZE) int pageSize) {
+    public Response getAllStops(@PathVariable @Min(value = 0, message = "Page number cannot be less than 0") int pageNo,
+                                @PathVariable @Min(value = Constants.PAGINATION_DEFAULT_SIZE, message = "Page size cannot be less than "+Constants.PAGINATION_DEFAULT_SIZE) int pageSize) {
         return Response.ok().setPayload(service.listAllStations(pageNo,pageSize));
     }
 }

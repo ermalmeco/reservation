@@ -9,9 +9,15 @@ import bus.reservation.system.dto.response.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 @RestController
+@Validated
 public class AgencyController {
 
     private static final Logger logger = LogManager.getLogger(BusReservationSystemApplication.class);
@@ -27,13 +33,8 @@ public class AgencyController {
         return Response.ok().setPayload(result);
     }
 
-    @DeleteMapping("/removeAgency/{id}")
-    public String deleteAgency(@PathVariable int id) {
-        return service.deleteAgency(id);
-    }
-
     @PutMapping("/addBusToAgency/{busCode}/{agencyCode}")
-    public Response addBusToAgency(@PathVariable String busCode, @PathVariable String agencyCode) {
+    public Response addBusToAgency(@PathVariable @Valid @NotEmpty(message = "Bus code cannot be empty") String busCode, @PathVariable @Valid @NotEmpty(message = "Agency cannot be empty") String agencyCode) {
         logger.debug("Controller call /addBusToAgency");
         BusDto result =  service.addBussToAgency(busCode,agencyCode);
         logger.debug("Controller result /addBusToAgency: "+ result);
@@ -41,15 +42,10 @@ public class AgencyController {
     }
 
     @GetMapping("/agency/{code}")
-    public Response getAgencyDetailsByCode(@PathVariable String code){
+    public Response getAgencyDetailsByCode(@PathVariable @Valid @NotEmpty(message = "Agency code cannot be empty") @Size(min = 3, max = 3, message = "Agency Code contains 3 chars") String code){
         logger.debug("Controller call /agency/{id}");
         AgencyDto result =  service.getAgencyDetailsByCode(code);
         logger.debug("Controller result /agency/{id}: "+ result.toString());
         return Response.ok().setPayload(result);
-    }
-
-    @PutMapping("/updateAgency")
-    public Agency updateAgency(@RequestBody Agency agency) {
-        return service.updateAgency(agency);
     }
 }

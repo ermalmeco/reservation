@@ -3,6 +3,8 @@ package bus.reservation.system.agency.enitities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,9 +20,9 @@ public class Station {
     private String name;
     private String details;
 
-    @OneToOne(mappedBy = "station",fetch=FetchType.EAGER)
-    private Trip trip;
+    @OneToMany(mappedBy = "station", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Trip> trip = new ArrayList<>();
 
-    @OneToOne(mappedBy = "endStationObj",fetch=FetchType.EAGER)
-    private Trip trip2;
+    @OneToMany(mappedBy = "endStationObj", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Trip> trip2 = new ArrayList<>();
 }

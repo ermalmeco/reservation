@@ -3,7 +3,6 @@ package bus.reservation.system.user.services;
 import bus.reservation.system.BusReservationSystemApplication;
 import bus.reservation.system.dto.mapper.UserMapper;
 import bus.reservation.system.exception.BRSException;
-import bus.reservation.system.exception.ExceptionType;
 import bus.reservation.system.user.entities.UserRoles;
 import bus.reservation.system.user.repositories.UserRolesRepository;
 import org.modelmapper.ModelMapper;
@@ -14,20 +13,14 @@ import bus.reservation.system.user.repositories.RoleRepository;
 import bus.reservation.system.user.repositories.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
-
-import bus.reservation.system.utils.Constants;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.util.stream.Collectors;
 
 import static bus.reservation.system.exception.EntityType.USER;
 import static bus.reservation.system.exception.ExceptionType.*;
@@ -44,29 +37,19 @@ public class UserService {
     private RoleRepository roleRepository;
 
     @Autowired
-    private HttpSession httpSession;
-
-    @Autowired
     private ModelMapper modelMapper;
 
     @Autowired
     private UserRolesRepository userRolesRepository;
 
-    public List<User> getUsers(){
-        return repository.findAll();
-    }
-
-    public User getUserById(int Id){
-        return repository.findById(Id).orElse(null);
-    }
-
-    public User getUserByFirstName(String firsName){
-        return repository.findByFirstName(firsName);
-    }
-
-    public String deleteUser(int Id){
-        repository.deleteById(Id);
-        return "User Deleted!";
+    public List<UserDto> getUsers(){
+        logger.debug("Service call /getUsers");
+        List<UserDto> result = repository.findAll()
+                .stream()
+                .map(user -> UserMapper.toUserDto(user))
+                .collect(Collectors.toList());
+        logger.debug("Result Service /getUsers: "+result.toString());
+        return result;
     }
 
     public UserDto updateUser(UserDto user) {

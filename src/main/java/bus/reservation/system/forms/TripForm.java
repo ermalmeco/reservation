@@ -1,29 +1,30 @@
 package bus.reservation.system.forms;
 
-import com.sun.istack.NotNull;
 import lombok.Data;
-import lombok.experimental.Accessors;
+import org.springframework.validation.annotation.Validated;
 
-import java.util.List;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data
-@Accessors(chain = true)
+@Validated
 public class TripForm {
-    @NotNull
+    @Min(value = 1,message = "Trip price must be greater than 0")
     private int tripFare;
 
-    @NotNull
+    @NotEmpty(message = "Please set the trip time")
     private String tripTime;
 
-    @NotNull
+    @NotNull(message = "Please define a start station for your trip")
     private String startStation;
 
-    @NotNull
+    @NotNull(message = "Please define an end station for your trip")
     private String endStation;
 
-    @NotNull
+    @NotNull(message = "Please define a bus for your trip")
     private String busCode;
 
-    @NotNull
+    @NotNull(message = "Please define the agency that is creating this trip")
     private String agencyCode;
 }

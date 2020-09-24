@@ -1,5 +1,6 @@
 package bus.reservation.system.agency.enitities;
 
+import bus.reservation.system.user.entities.User;
 import bus.reservation.system.user.entities.UserRoles;
 import lombok.*;
 
@@ -27,19 +28,19 @@ public class Trip {
     @Column(insertable = false,updatable = false)
     private int agency;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "startStation")
     private Station station;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "endStation")
     private Station endStationObj;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bus")
     private Bus busObj;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agency")
     private Agency agencyObj;
 

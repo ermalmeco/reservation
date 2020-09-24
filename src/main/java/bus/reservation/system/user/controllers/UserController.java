@@ -21,18 +21,8 @@ public class UserController {
     private UserService service;
 
     @GetMapping("/allusers")
-    public List<User> getUsers(){
-        return service.getUsers();
-    }
-
-    @GetMapping("/user/{Id}")
-    public User getUserById(@PathVariable int Id){
-        return service.getUserById(Id);
-    }
-
-    @GetMapping("/user/{firstName}")
-    public User getUserByFirstName(@PathVariable String firstName){
-        return service.getUserByFirstName(firstName);
+    public Response getUsers(){
+        return Response.ok().setPayload(service.getUsers());
     }
 
     @PutMapping("/updateUser")
@@ -41,10 +31,5 @@ public class UserController {
         UserDto result = service.updateUser(user);
         logger.debug("Controller result /updateUser: "+ result.toString());
         return Response.ok().setPayload(result);
-    }
-
-    @PutMapping("/delete/{Id}")
-    public String deleteUser(@PathVariable int Id){
-        return service.deleteUser(Id);
     }
 }

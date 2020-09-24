@@ -5,6 +5,8 @@ import bus.reservation.system.user.entities.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,8 +25,8 @@ public class Agency {
     @Column(insertable = false,updatable = false)
     private Integer owner;
 
-    @OneToOne(mappedBy = "agencyObj",fetch= FetchType.EAGER)
-    private Trip trip;
+    @OneToMany(mappedBy = "agencyObj", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Trip> trip = new ArrayList<>();
 
     @OneToOne(mappedBy = "busAgencyObj",fetch=FetchType.EAGER)
     private Bus bus;

@@ -110,11 +110,6 @@ public class TripService {
         throw BRSException.throwException(USER, NOT_ADMIN, "");
     }
 
-    public String deleteTrip(int tripId){
-        repository.deleteById(tripId);
-        return "Trip deleted!";
-    }
-
     public List<TripDto> searchTripBetweenStations(int startStation, int endStation){
         logger.debug("Service call /findTripByStations");
         List<TripDto> result = repository.findTripsByStartStationAndEndStation(startStation,endStation)

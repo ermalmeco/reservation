@@ -98,23 +98,6 @@ public class AgencyService {
         throw BRSException.throwException(USER, NOT_ADMIN, "");
     }
 
-    public String deleteAgency(int agencyId) {
-        repository.deleteById(agencyId);
-        return "Agency deleted!";
-    }
-
-    public Agency updateAgency(Agency agency) {
-        Agency exAgency = repository.findById(agency.getId()).orElse(null);
-        if (exAgency != null) {
-            exAgency.setDetails(agency.getDetails());
-            exAgency.setCode(agency.getCode());
-            exAgency.setName(agency.getName());
-            exAgency.setOwner(agency.getOwner());
-            return agency;
-        }
-        return agency;
-    }
-
     public AgencyDto getAgencyDetailsByCode(String code) {
         logger.debug("Service call /getAgencyDetailsByCode");
         Agency agency = repository.findByCode(code);

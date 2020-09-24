@@ -4,6 +4,8 @@ import bus.reservation.system.user.entities.Role;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,8 +25,8 @@ public class Bus {
     @Column(insertable = false,updatable = false)
     private Integer agency;
 
-    @OneToOne(mappedBy = "busObj",fetch=FetchType.EAGER)
-    private Trip trip;
+    @OneToMany(mappedBy = "busObj", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Trip> trip = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agency")

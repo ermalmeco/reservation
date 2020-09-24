@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class BookController {
     private BookService service;
 
     @PostMapping("/bookTrip")
-    public Response bookTrip(@RequestBody @Validated BookForm bookForm){
+    public Response bookTrip(@RequestBody @Valid BookForm bookForm){
         logger.debug("Controller call /bookTrip");
         BookDto result = service.bookTrip(bookForm);
         logger.debug("Controller result /bookTrip: "+ result.toString());
@@ -32,7 +33,9 @@ public class BookController {
     }
 
     @GetMapping("/getuserbookings/{userId}/{pageNo}/{pageSize}")
-    public Response getuserbookings(@PathVariable @Validated int userId, @PathVariable @Min(0) int pageNo, @PathVariable @Min(Constants.PAGINATION_DEFAULT_SIZE) int pageSize){
+    public Response getuserbookings(@PathVariable @Validated int userId,
+                                    @PathVariable @Min(value = 0, message = "Page number cannot be less than 0") int pageNo,
+                                    @PathVariable @Min(value = Constants.PAGINATION_DEFAULT_SIZE, message = "Page size cannot be less than "+Constants.PAGINATION_DEFAULT_SIZE) int pageSize){
         logger.debug("Controller call /getuserbookings");
         List<BookDto> result = service.getuserbookings(userId,pageNo,pageSize);
         logger.debug("Controller result /getuserbookings: "+ result.toString());
