@@ -29,7 +29,7 @@ public class StationService {
                 .stream()
                 .map(station -> StationMapper.toStationDto(station))
                 .collect(Collectors.toList());
-        logger.debug("Result Service /getStations: "+result.toString());
+        logger.info("Result Service /getStations: "+result.toString());
         return result;
     }
 }

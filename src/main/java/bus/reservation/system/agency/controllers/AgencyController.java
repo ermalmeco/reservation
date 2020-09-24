@@ -29,7 +29,7 @@ public class AgencyController {
     public Response addAgency(@RequestBody Agency agency) {
         logger.debug("Controller call /addAgency");
         AgencyDto result =  service.addAgency(agency);
-        logger.debug("Controller result /addAgency: "+ result.toString());
+        logger.info("Controller result /addAgency: "+ result.toString());
         return Response.ok().setPayload(result);
     }
 
@@ -37,7 +37,7 @@ public class AgencyController {
     public Response addBusToAgency(@PathVariable @Valid @NotEmpty(message = "Bus code cannot be empty") String busCode, @PathVariable @Valid @NotEmpty(message = "Agency cannot be empty") String agencyCode) {
         logger.debug("Controller call /addBusToAgency");
         BusDto result =  service.addBussToAgency(busCode,agencyCode);
-        logger.debug("Controller result /addBusToAgency: "+ result);
+        logger.info("Controller result /addBusToAgency: "+ result);
         return Response.ok().setPayload(result);
     }
 
@@ -45,7 +45,7 @@ public class AgencyController {
     public Response getAgencyDetailsByCode(@PathVariable @Valid @NotEmpty(message = "Agency code cannot be empty") @Size(min = 3, max = 3, message = "Agency Code contains 3 chars") String code){
         logger.debug("Controller call /agency/{id}");
         AgencyDto result =  service.getAgencyDetailsByCode(code);
-        logger.debug("Controller result /agency/{id}: "+ result.toString());
+        logger.info("Controller result /agency/{id}: "+ result.toString());
         return Response.ok().setPayload(result);
     }
 }

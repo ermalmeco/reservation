@@ -29,7 +29,7 @@ public class TripScheduleController {
     public Response addSchedule(@RequestBody @Valid TripScheduleForm schedule){
         logger.debug("Controller call /scheduleTrip");
         TripScheduleDto result = service.addSchedule(schedule);
-        logger.debug("Controller result /scheduleTrip: "+ result.toString());
+        logger.info("Controller result /scheduleTrip: "+ result.toString());
         return Response.ok().setPayload(result);
     }
 
@@ -37,7 +37,7 @@ public class TripScheduleController {
     public Response getAvailableSchedules(){
         logger.debug("Controller call /getSchedules");
         List<TripScheduleDto> result = service.getAvailableSchedules();
-        logger.debug("Controller result /getSchedules: "+ result.toString());
+        logger.info("Controller result /getSchedules: "+ result.toString());
         return Response.ok().setPayload(result);
     }
 }

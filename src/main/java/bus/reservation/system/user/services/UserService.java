@@ -48,7 +48,7 @@ public class UserService {
                 .stream()
                 .map(user -> UserMapper.toUserDto(user))
                 .collect(Collectors.toList());
-        logger.debug("Result Service /getUsers: "+result.toString());
+        logger.info("Result Service /getUsers: "+result.toString());
         return result;
     }
 
@@ -84,10 +84,10 @@ public class UserService {
             }
 
             UserDto result = UserMapper.toUserDto(repository.save(savedUser));
-            logger.debug("Service result /updateUser: "+result.toString());
+            logger.info("Service result /updateUser: "+result.toString());
             return result;
         }
-        logger.debug("Service result /updateUser. Something went wrong. User is not Authenticated!");
+        logger.info("Service result /updateUser. Something went wrong. User is not Authenticated!");
         throw BRSException.throwException(USER,AUTHENTICATE,"");
     }
 

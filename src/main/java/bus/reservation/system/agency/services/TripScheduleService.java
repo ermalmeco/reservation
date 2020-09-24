@@ -71,13 +71,13 @@ public class TripScheduleService {
                 schedule.setTicketSold(0);
 
                 TripScheduleDto result = TripScheduleMapper.toScheduleDto(tripScheduleRepository.save(schedule));
-                logger.debug("Service result /addSchedule: " + result.toString());
+                logger.info("Service result /addSchedule: " + result.toString());
                 return result;
             }
-            logger.debug("Service result /addSchedule. Something went wrong. Trip not found!");
+            logger.info("Service result /addSchedule. Something went wrong. Trip not found!");
             throw BRSException.throwException(TRIP, ENTITY_NOT_FOUND, "" + scheduleForm.getTripId());
         }
-        logger.debug("Service result /addSchedule. Something went wrong. You are not admin!");
+        logger.info("Service result /addSchedule. Something went wrong. You are not admin!");
         throw BRSException.throwException(USER, NOT_ADMIN, "");
     }
 
@@ -87,7 +87,7 @@ public class TripScheduleService {
                 .stream()
                 .map(schedule -> TripScheduleMapper.toScheduleDto(schedule))
                 .collect(Collectors.toList());
-        logger.debug("Result Service /getSchedules: "+result.toString());
+        logger.info("Result Service /getSchedules: "+result.toString());
         return result;
     }
 

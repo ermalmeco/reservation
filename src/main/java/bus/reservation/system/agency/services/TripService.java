@@ -91,22 +91,22 @@ public class TripService {
                             newTrip.setEndStationObj(stopStation.get(0));
                             newTrip.setBusObj(bus);
                             TripDto result = TripMapper.toTripDto(repository.save(newTrip));
-                            logger.debug("Service result /addTrip: " + result.toString());
+                            logger.info("Service result /addTrip: " + result.toString());
                             return result;
                         }
-                        logger.debug("Service result /addTrip. Something went wrong. Agency not found!");
+                        logger.info("Service result /addTrip. Something went wrong. Agency not found!");
                         throw BRSException.throwException(BUS, ENTITY_NOT_FOUND, "" + trip.getAgencyCode());
                     }
-                    logger.debug("Service result /addTrip. Something went wrong. Bus not found!");
+                    logger.info("Service result /addTrip. Something went wrong. Bus not found!");
                     throw BRSException.throwException(BUS, ENTITY_NOT_FOUND, "" + trip.getBusCode());
                 }
-                logger.debug("Service result /addTrip. Something went wrong. End station not found!");
+                logger.info("Service result /addTrip. Something went wrong. End station not found!");
                 throw BRSException.throwException(STOP, ENTITY_NOT_FOUND, "" + trip.getEndStation());
             }
-            logger.debug("Service result /addTrip. Something went wrong. Start station not found!");
+            logger.info("Service result /addTrip. Something went wrong. Start station not found!");
             throw BRSException.throwException(STOP, ENTITY_NOT_FOUND, "" + trip.getStartStation());
         }
-        logger.debug("Service result /addTrip. Something went wrong. You are not admin!");
+        logger.info("Service result /addTrip. Something went wrong. You are not admin!");
         throw BRSException.throwException(USER, NOT_ADMIN, "");
     }
 
@@ -117,7 +117,7 @@ public class TripService {
                 .map(trip -> TripMapper.toTripDto(trip))
                 .collect(Collectors.toList());
         logger.debug("stations " + result);
-        logger.debug("Result Service /findTripByStations: "+result.toString());
+        logger.info("Result Service /findTripByStations: "+result.toString());
         return result;
     }
 }

@@ -68,10 +68,10 @@ public class AgencyService {
                 agency.setUser(userRepository.findById(agency.getOwner()).orElse(null));
             }
             AgencyDto result = AgencyMapper.toAgencyDto(repository.save(agency));
-            logger.debug("Service result /addAgency: " + result.toString());
+            logger.info("Service result /addAgency: " + result.toString());
             return result;
         }
-        logger.debug("Service result /addAgency. Something went wrong. You are not admin!");
+        logger.info("Service result /addAgency. Something went wrong. You are not admin!");
         throw BRSException.throwException(USER,NOT_ADMIN,"");
     }
 
@@ -87,14 +87,14 @@ public class AgencyService {
                 existingBus.setAgency(agency.getId());
                 existingBus.setBusAgencyObj(agency);
                 BusDto result = BusMapper.toBusDto(busRepository.save(existingBus));
-                logger.debug("Service result /addBussToAgency: " + result.toString());
+                logger.info("Service result /addBussToAgency: " + result.toString());
                 return result;
             } else {
-                logger.debug("Service result /addBusToAgency: Bus not found");
+                logger.info("Service result /addBusToAgency: Bus not found");
                 throw BRSException.throwException(BUS, ENTITY_NOT_FOUND, busCode);
             }
         }
-        logger.debug("Service result /addAgency. Something went wrong. You are not admin!");
+        logger.info("Service result /addAgency. Something went wrong. You are not admin!");
         throw BRSException.throwException(USER, NOT_ADMIN, "");
     }
 
@@ -103,7 +103,7 @@ public class AgencyService {
         Agency agency = repository.findByCode(code);
         if (agency != null) {
             AgencyDto result = AgencyMapper.toAgencyDto(agency);// modelMapper.map(agency, AgencyDto.class);
-            logger.debug("Service result /getAgencyDetailsByCode success: "+ result);
+            logger.info("Service result /getAgencyDetailsByCode success: "+ result);
             return result;
         }
         logger.debug("Service call /getAgencyDetailsByCode failed. Agency not found");

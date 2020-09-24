@@ -28,7 +28,7 @@ public class BookController {
     public Response bookTrip(@RequestBody @Valid BookForm bookForm){
         logger.debug("Controller call /bookTrip");
         BookDto result = service.bookTrip(bookForm);
-        logger.debug("Controller result /bookTrip: "+ result.toString());
+        logger.info("Controller result /bookTrip: "+ result.toString());
         return Response.ok().setPayload(result);
     }
 
@@ -38,7 +38,7 @@ public class BookController {
                                     @PathVariable @Min(value = Constants.PAGINATION_DEFAULT_SIZE, message = "Page size cannot be less than "+Constants.PAGINATION_DEFAULT_SIZE) int pageSize){
         logger.debug("Controller call /getuserbookings");
         List<BookDto> result = service.getuserbookings(userId,pageNo,pageSize);
-        logger.debug("Controller result /getuserbookings: "+ result.toString());
+        logger.info("Controller result /getuserbookings: "+ result.toString());
         return Response.ok().setPayload(result);
     }
 }

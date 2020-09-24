@@ -28,7 +28,7 @@ public class TripController {
     public Response addTrip(@RequestBody @Valid TripForm trip) {
         logger.debug("Controller call /addTrip");
         TripDto result = service.addTrip(trip);
-        logger.debug("Controller result /addTrip: "+ result.toString());
+        logger.info("Controller result /addTrip: "+ result.toString());
         return Response.ok().setPayload(result);
     }
 
@@ -36,7 +36,7 @@ public class TripController {
     public Response searchTripBetweenStations(@PathVariable @Valid @Min(value = 1, message = "Station Id cannot be 0") int station1, @PathVariable @Valid @Min(value = 1, message = "Station Id cannot be 0") int station2){
         logger.debug("Controller call /findTripByStations");
         List<TripDto> result =  service.searchTripBetweenStations(station1,station2);
-        logger.debug("Controller result /findTripByStations: "+ result.toString());
+        logger.info("Controller result /findTripByStations: "+ result.toString());
         return Response.ok().setPayload(result);
     }
 }

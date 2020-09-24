@@ -58,16 +58,16 @@ public class BookService {
                     int seatNr = schedule.getAvailableSeats() - schedule.getTicketSold();
                     book.setSeatNumber(seatNr);
                     BookDto result = BookMapper.toBookDto(repository.save(book));
-                    logger.debug("Service result /bookTrip: " + result.toString());
+                    logger.info("Service result /bookTrip: " + result.toString());
                     return result;
                 }
-                logger.debug("Service result /bookTrip. Something went wrong. Trip not found!");
+                logger.info("Service result /bookTrip. Something went wrong. Trip not found!");
                 throw BRSException.throwException(TRIP, ENTITY_NOT_FOUND, "" + schedule.getTripId());
             }
-            logger.debug("Service result /bookTrip. Something went wrong. Schedule not found!");
+            logger.info("Service result /bookTrip. Something went wrong. Schedule not found!");
             throw BRSException.throwException(TRIPSCHEDULE, ENTITY_NOT_FOUND, "" + bookForm.getScheduleId());
         }
-        logger.debug("Service result /bookTrip. Something went wrong. User not found!");
+        logger.info("Service result /bookTrip. Something went wrong. User not found!");
         throw BRSException.throwException(USER, ENTITY_NOT_FOUND, "" + bookForm.getUserEmail());
     }
 
@@ -79,7 +79,7 @@ public class BookService {
                 .stream()
                 .map(book -> BookMapper.toBookDto(book))
                 .collect(Collectors.toList());
-        logger.debug("Result Service /getuserbookings: "+result.toString());
+        logger.info("Result Service /getuserbookings: "+result.toString());
         return result;
     }
 }

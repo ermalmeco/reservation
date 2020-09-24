@@ -61,7 +61,7 @@ public class JwtAuthenticationController {
         final String token = jwtTokenUtil.generateToken(userDetails);
 
         ResponseEntity<?> result = ResponseEntity.ok(new JwtResponse(token));
-        logger.debug("Controller result /register " + result.toString());
+        logger.info("Controller result /register " + result.toString());
         return result;
     }
 
@@ -69,7 +69,7 @@ public class JwtAuthenticationController {
 	public Response saveUser(@RequestBody @Valid UserSignUpForm user) throws Exception {
         logger.debug("Controller call /register");
         UserDto result = userDetailsService.save(user);
-        logger.debug("Controller result /register " + result.toString());
+        logger.info("Controller result /register " + result.toString());
         return Response.ok().setPayload(result);
 	}
 

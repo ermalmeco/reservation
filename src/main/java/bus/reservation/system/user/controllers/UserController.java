@@ -29,7 +29,7 @@ public class UserController {
     public Response updateUser(@RequestBody UserDto user){
         logger.debug("Controller call /updateUser");
         UserDto result = service.updateUser(user);
-        logger.debug("Controller result /updateUser: "+ result.toString());
+        logger.info("Controller result /updateUser: "+ result.toString());
         return Response.ok().setPayload(result);
     }
 }

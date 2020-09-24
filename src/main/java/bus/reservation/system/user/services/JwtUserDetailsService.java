@@ -103,7 +103,7 @@ public class JwtUserDetailsService implements UserDetailsService {
             }
 
             UserDto result = UserMapper.toUserDto(userRepository.save(newUser));
-            logger.debug("Service result /register "+result.toString());
+            logger.info("Service result /register "+result.toString());
             return result;
         }else{
             logger.debug("Service call /register, something went wrong");
