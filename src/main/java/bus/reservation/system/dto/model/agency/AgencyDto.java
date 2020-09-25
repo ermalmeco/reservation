@@ -11,10 +11,8 @@ import lombok.Setter;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AgencyDto {
-    private Integer id;
     private String code;
     private String name;
     private String details;
-    private Integer ownerId;
     private String owner;
 }

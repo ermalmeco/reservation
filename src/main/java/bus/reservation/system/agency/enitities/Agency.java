@@ -34,4 +34,15 @@ public class Agency {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner")
     private User user;
+
+    @Override
+    public String toString() {
+        return "Agency{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", details='" + details + '\'' +
+                ", owner=" + owner +
+                '}';
+    }
 }

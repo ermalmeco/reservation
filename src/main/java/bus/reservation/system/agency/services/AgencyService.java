@@ -7,14 +7,18 @@ import bus.reservation.system.agency.repositories.AgencyRepository;
 import bus.reservation.system.agency.repositories.BusRepository;
 import bus.reservation.system.dto.mapper.AgencyMapper;
 import bus.reservation.system.dto.mapper.BusMapper;
+import bus.reservation.system.dto.mapper.TripMapper;
 import bus.reservation.system.dto.model.agency.AgencyDto;
 import bus.reservation.system.dto.model.agency.BusDto;
+import bus.reservation.system.dto.model.agency.TripDto;
 import bus.reservation.system.dto.model.user.UserDto;
 import bus.reservation.system.exception.BRSException;
+import bus.reservation.system.forms.CreateAgencyForm;
 import bus.reservation.system.user.entities.User;
 import bus.reservation.system.user.entities.UserRoles;
 import bus.reservation.system.user.repositories.UserRepository;
 import bus.reservation.system.user.services.UserService;
+import bus.reservation.system.utils.Utils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
@@ -24,7 +28,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static bus.reservation.system.exception.EntityType.*;
 import static bus.reservation.system.exception.ExceptionType.*;
@@ -48,7 +54,7 @@ public class AgencyService {
 
     private static final Logger logger = LogManager.getLogger(BusReservationSystemApplication.class);
 
-    public AgencyDto addAgency(Agency agency) {
+    public AgencyDto addAgency(CreateAgencyForm agency) {
         logger.debug("Service call /addAgency");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -61,13 +67,26 @@ public class AgencyService {
             }
         }
         if (isAdmin) {
-            User user = userRepository.findById(agency.getOwner()).orElse(null);
-            if (user == null) {
-                agency.setOwner(0);
-            } else {
-                agency.setUser(userRepository.findById(agency.getOwner()).orElse(null));
+            Agency newAgency = new Agency();
+            String owner = userDetails.getUsername();
+            User ownerDetails = userRepository.findByEmail(owner);
+            Agency existingAgency = repository.findByOwner(ownerDetails.getId());
+            if (existingAgency != null){
+                logger.info("Service result /addAgency. User can have only one Agency. Your`s is with code: "+ existingAgency.getCode());
+                throw BRSException.throwException(AGENCY, DUPLICATE_ENTITY,existingAgency.getCode());
             }
-            AgencyDto result = AgencyMapper.toAgencyDto(repository.save(agency));
+            newAgency.setOwner(ownerDetails.getId());
+            newAgency.setUser(ownerDetails);
+            newAgency.setName(agency.getName());
+            newAgency.setDetails(agency.getDetails());
+
+            String agencyCode = Utils.generateCode().toUpperCase();
+            while (repository.findByCode(agencyCode) != null){
+                agencyCode = Utils.generateCode().toUpperCase();
+            }
+            newAgency.setCode(agencyCode);
+
+            AgencyDto result = AgencyMapper.toAgencyDto(repository.save(newAgency));
             logger.info("Service result /addAgency: " + result.toString());
             return result;
         }
@@ -102,11 +121,21 @@ public class AgencyService {
         logger.debug("Service call /getAgencyDetailsByCode");
         Agency agency = repository.findByCode(code);
         if (agency != null) {
-            AgencyDto result = AgencyMapper.toAgencyDto(agency);// modelMapper.map(agency, AgencyDto.class);
+            AgencyDto result = AgencyMapper.toAgencyDto(agency);
             logger.info("Service result /getAgencyDetailsByCode success: "+ result);
             return result;
         }
         logger.debug("Service call /getAgencyDetailsByCode failed. Agency not found");
         throw BRSException.throwException(AGENCY, ENTITY_NOT_FOUND, code);
+    }
+
+    public List<AgencyDto> getAllAgencies(){
+        logger.debug("Service call /getAllAgencies");
+        List<AgencyDto> result = repository.findAll()
+                .stream()
+                .map(agency -> AgencyMapper.toAgencyDto(agency))
+                .collect(Collectors.toList());
+        logger.info("Result Service /getAllAgencies: "+result.toString());
+        return result;
     }
 }

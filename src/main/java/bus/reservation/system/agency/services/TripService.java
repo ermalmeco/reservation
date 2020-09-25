@@ -29,8 +29,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static bus.reservation.system.exception.EntityType.*;
-import static bus.reservation.system.exception.ExceptionType.ENTITY_NOT_FOUND;
-import static bus.reservation.system.exception.ExceptionType.NOT_ADMIN;
+import static bus.reservation.system.exception.ExceptionType.*;
 
 @Service
 public class TripService {
@@ -53,11 +52,9 @@ public class TripService {
 
     public TripDto addTrip(TripForm trip) {
         logger.debug("Service call /addTrip");
-        logger.debug("tripData: "+trip.toString());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         UserDto exUser = userService.findUserByEmail(userDetails.getUsername());
-        logger.debug("exUser: "+exUser.toString());
         boolean isAdmin = false;
         for (UserRoles role: exUser.getUserRoles()) {
             if (role.getRoleId() == 1) {
@@ -116,7 +113,6 @@ public class TripService {
                 .stream()
                 .map(trip -> TripMapper.toTripDto(trip))
                 .collect(Collectors.toList());
-        logger.debug("stations " + result);
         logger.info("Result Service /findTripByStations: "+result.toString());
         return result;
     }

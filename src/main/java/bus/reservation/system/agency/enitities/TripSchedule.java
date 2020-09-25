@@ -6,9 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.lang.reflect.Array;
 import java.sql.Date;
-import java.util.List;
 
 @Getter
 @Setter

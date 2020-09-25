@@ -1,7 +1,5 @@
 package bus.reservation.system.agency.enitities;
 
-import bus.reservation.system.user.entities.User;
-import bus.reservation.system.user.entities.UserRoles;
 import lombok.*;
 
 import javax.persistence.*;

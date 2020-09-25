@@ -7,7 +7,6 @@ import bus.reservation.system.agency.repositories.StationRepository;
 import bus.reservation.system.user.entities.Role;
 import bus.reservation.system.user.repositories.RoleRepository;
 import bus.reservation.system.utils.Constants;
-import bus.reservation.system.utils.Utils;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -74,7 +73,6 @@ public class BusReservationSystemApplication {
 			List<Station> lst4 = stationRepository.findByCode("ST4",paging);
 			if (lst4.size() == 0) {
 				Station st4 = new Station();
-				st4 = new Station();
 				st4.setName("Stacioni 4");
 				st4.setDetails("21 Dhjetori");
 				st4.setCode("ST4");
@@ -141,7 +139,7 @@ public class BusReservationSystemApplication {
 				bus1.setName("Bus 1");
 				bus1.setDetails("Bus number 1");
 				bus1.setCode("B1");
-				bus1.setAgency((Integer)0);
+				bus1.setAgency(0);
 				bus1.setCapacity(50);
 				busRepository.save(bus1);
 			}
@@ -152,8 +150,8 @@ public class BusReservationSystemApplication {
 				bus2.setName("Bus 2");
 				bus2.setDetails("Bus number 2");
 				bus2.setCode("B2");
-				bus1.setAgency((Integer)0);
-				bus1.setCapacity(50);
+				bus2.setAgency(0);
+				bus2.setCapacity(50);
 				busRepository.save(bus2);
 			}
 
