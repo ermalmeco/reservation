@@ -1,7 +1,6 @@
 package bus.reservation.system.agency.controllers;
 
 import bus.reservation.system.BusReservationSystemApplication;
-import bus.reservation.system.agency.enitities.Agency;
 import bus.reservation.system.agency.services.AgencyService;
 import bus.reservation.system.dto.model.agency.AgencyDto;
 import bus.reservation.system.dto.model.agency.BusDto;
@@ -20,6 +19,7 @@ import java.util.List;
 
 @RestController
 @Validated
+@RequestMapping("/")
 public class AgencyController {
 
     private static final Logger logger = LogManager.getLogger(BusReservationSystemApplication.class);

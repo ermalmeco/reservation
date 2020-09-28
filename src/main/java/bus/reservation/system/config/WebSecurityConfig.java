@@ -48,12 +48,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    //To use the Swagger you need either to be logged in or disable the Authentication mechanism by uncommenting the
+    //below function and commenting the other one with the same name
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception{
+//        http.authorizeRequests().antMatchers("/").permitAll();
+//    }
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         // We don't need CSRF for this example
         httpSecurity.csrf().disable()
                 // dont authenticate this particular request
-                .authorizeRequests().antMatchers("/authenticate").permitAll().antMatchers("/register").permitAll().
+                .authorizeRequests().
+                antMatchers("/authenticate").permitAll().
+                antMatchers("/register").permitAll().
                 // all other requests need to be authenticated
                         anyRequest().authenticated().and().
                 // make sure we use stateless session; session won't be used to

@@ -18,6 +18,7 @@ import java.util.List;
 
 @RestController
 @Validated
+@RequestMapping("/")
 public class BookController {
     private static final Logger logger = LogManager.getLogger(BusReservationSystemApplication.class);
 

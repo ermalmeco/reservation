@@ -31,6 +31,7 @@ import javax.validation.Valid;
 
 @RestController
 @CrossOrigin
+@RequestMapping("/")
 public class JwtAuthenticationController {
 
     private static final Logger logger = LogManager.getLogger(BusReservationSystemApplication.class);

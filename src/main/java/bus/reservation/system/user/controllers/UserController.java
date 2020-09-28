@@ -17,6 +17,7 @@ import java.util.List;
 
 @RestController
 @Validated
+@RequestMapping("/")
 public class UserController {
 
     private static final Logger logger = LogManager.getLogger(BusReservationSystemApplication.class);
